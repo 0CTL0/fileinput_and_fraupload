@@ -1,0 +1,42 @@
+
+
+从bootStrap-fileinput和FraUpload两个插件摸索出来的经验，前者功能强大，官方维护。前者jquery插件网下载的，小巧足够满足需求，源码改动简单。
+
+1、传数据到后台的方式：
+	1、表单提交：这是浏览器行为，通过表单表单属性来提交，但必须重新渲染刷新页面。文件通过input的file类型上传。
+	2、ajax提交：这是js引擎行为，必须启动js，本质是封装了XHR对象实现的，可局部刷新。通过formdata对象，ajax也支持文件上传。
+		异步模式：异步执行ajax方法。
+		同步模式：同步执行ajax方法。
+
+2、两个插件底层是基于input的file类型+浏览器的API FileReader实现的，还用到了排序包。
+
+3、插件内置的ajax上传（利用formdaa）：
+	bootStrap-fileinput：选择文件后直接上传图片到服务器，返回指定格式的数据，然后插件将其加入到初始预览区域
+	FraUpload：也是选择后触发ajax上传到服务器，返回指定的数据供处理
+     总之，	好鸡肋的功能
+
+4、关于回调方法和属性：
+	看了下，两者都提供了差不多的回调接口，应该是通过FielReader实现的，有时有用到。插件属性的话，fileinput功能确实很强大。
+
+5、关于排序：
+	bootStrap-fileinput：只有加入初始预览的文件才可排序，文档上说通过内置的ajax上传的文件返回指定文件后自动加入初始预览数组，没有找到
+方法将浏览器本地图片加入预览数组的方法，气死。
+	FraUpload：直接操作浏览器本地文件排序的，这点好。
+
+6、关于获取浏览器本地文件：
+	bootStrap-fileinput：还是没有找到方式，普通的jquery方式：document.getElementById("imagepath") 获取不到
+	FraUpload：用普通的jquery方式也获取不到，看了源码，有提供返回本地文件数组的方法。普通方式获取不到的原因，可能是被插件封装了。
+
+7、文件的本质：
+	js中打印文件对象：
+		File
+			name: "icon_btn_operate4.png"
+			lastModified: 1575514468000
+			lastModifiedDate: Thu Dec 05 2019 10:54:28 GMT+0800 (中国标准时间) {}
+			webkitRelativePath: ""
+			size: 9340
+			type: "image/png"
+			__proto__: File
+	而图片的src属性值放的却是Base64的图片文件编码。
+	图片文件究竟是什么？？？
+	

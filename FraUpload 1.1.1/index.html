@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FraUpload图片上传插件</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+        .string { color: green; }
+         .number { color: darkorange; }
+         .boolean { color: blue; }
+         .null { color: magenta; }
+         .key { color: red; }
+         body{
+            padding: 1rem;
+         }
+         pre{
+            background-color: #f7f7f9;
+            border: 1px solid #e1e1e8;
+            padding: 5px 10px;
+            margin: 0;
+            border-radius: 8px;
+            min-height: 20px;
+         }
+         xmp{
+            margin: 0;
+            padding: 0;
+         }
+         #upload_duixiang{
+            display: inline-block;
+            margin-bottom: 5px;
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+            padding: 5px 10px;
+            font-size: 12px;
+            line-height: 1.5;
+            border-radius: 3px;
+            cursor: pointer;
+			float:left;
+			margin-top:50px;
+			margin left:10px;
+         }
+    </style>
+</head>
+<body>
+
+
+<form enctype="multipart/form-data">
+    <h1>FraUpload图片上传插件</h1>
+    <h5>请将文件解压放到apache服务目录下才能正常使用</h5>
+    <input type="hidden" id="imagepath" name="addimg">  <!-- 保存的图片id 用于表单提交 -->
+ 
+	<span id="upload_duixiang">上传</span><!-- 上传按钮 -->
+    <div class="show"></div> <!-- 输出图片 -->
+    <pre id="geoJsonTxt"></pre> <!-- 输出文件的json数据 -->
+</form> 
+
+<button onclick="myFunction()">打印</button>
+
+<div>
+    <h1>使用方法</h1>
+    <h3>1. 在html中加下如下代码</h3>
+    <code><pre><xmp>
+<input type="hidden" id="imagepath" name="">  <!-- 保存的图片id 用于表单提交 -->
+<span id="upload_duixiang">上传</span><!-- 上传按钮 -->
+<div class="show" style="margin-left:100px;"></div> <!-- 输出图片 -->
+<pre id="geoJsonTxt"></pre> <!-- 输出文件的json数据 -->
+    </xmp></pre></code>
+    
+    <h3>2. 引用css js文件</h3>
+    <pre><code><xmp>
+<link rel="stylesheet" type="text/css" href="FraUpload.css">
+<script src="jquery.min.js?v=2.1.4"></script>
+<!-- 图片排序 -->
+<script src="Sortable/Sortable.js"></script>
+<script type="text/javascript" src="MD5.js"></script>
+<script type="text/javascript" src="FraUpload.js"></script>
+    </xmp></code></pre>  
+
+    <h3>3. 实例化js对象</h3>
+    <pre><code>
+// 商品图片上传
+a = $("#upload_duixiang").FraUpload({
+    view        : ".show",      // 视图输出位置
+    url         : "upload.php", // 上传接口
+    fetch       : "img",   // 视图现在只支持img
+    debug       : false,    // 是否开启调试模式
+    /* 外部获得的回调接口 */
+    onLoad: function(e){                    // 选择文件的回调方法
+        console.log("外部: 初始化完成...");
+    },
+    breforePort: function (e) {         // 发送前触发
+        console.log("文件发送之前触发");
+    },  
+    successPort: function (e) {         // 发送成功触发
+        console.log("文件发送成功");
+        onload_image()
+    },
+    errorPort: function (e) {       // 发送失败触发
+        console.log("文件发送失败");
+        onload_image()
+    },
+    deletePost: function(e){    // 删除文件触发
+        console.log("删除文件");
+        console.log(e);
+        alert('删除了'+e.filename)
+        onload_image()
+    },
+    sort: function(e){      // 排序触发
+        console.log("排序");
+        onload_image()
+    },
+});
+    </code></pre>
+
+<h3>4. 更新input表单数据</h3>
+    <pre><code>
+// 获取图片上传信息
+function onload_image(){
+    var res = a.FraUpload.show()
+    var ids = [];
+    for(let k in res){
+        this_val = res[k]
+        if(!empty(res[k]['is_upload']) && !empty(res[k]['ajax'])){
+            ajax_value = res[k]['ajax'];
+            ids.push(ajax_value.data.id)
+        }
+    }
+    $("#imagepath").val(ids);
+    $('#geoJsonTxt').html(JsonFormat(res));
+}
+    </code></pre>
+
+    <h3>5. 上述js所需方法</h3>
+    <pre><code>
+// 将类库返回的json打印到pre中
+function JsonFormat(json) {
+    if (typeof json != 'string') {
+        json = JSON.stringify(json, undefined, 2);
+    }
+        json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+             var cls = 'number';
+                if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'key';
+                        } else {
+                            cls = 'string';
+                        }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+         });
+}
+/**
+ * 判断变量是否为空
+ */
+function empty(value) {
+    if(value=="" || value==undefined || value==null || value==false || value==[] || value=={}){
+        return true;
+    }else{
+        return false;
+    }
+}
+    </code></pre>
+
+</div>
+
+<link rel="stylesheet" type="text/css" href="FraUpload.css">
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<!-- 图片排序 -->
+<script src="Sortable/Sortable.js"></script>
+<script type="text/javascript" src="MD5.js"></script>
+<script type="text/javascript" src="FraUpload.js"></script>
+<script type="text/javascript">
+    
+function myFunction() { 		
+		console.log(document.querySelector('input[name="addimg"]').files.length);
+    	for(var i=0; i < document.querySelector('input[name="addimg"]').files.length; i++) {
+			console.log(document.querySelector('input[name="addimg"]').files[i]);
+		}
+}	
+	
+// 商品图片上传
+a = $("#upload_duixiang").FraUpload({
+    view        : ".show",      // 视图输出位置
+    url         : "upload.php", // 上传接口
+    fetch       : "img",   // 视图现在只支持img
+    debug       : false,    // 是否开启调试模式
+    /* 外部获得的回调接口 */
+    onLoad: function(e){                    // 选择文件的回调方法
+        console.log("外部: 初始化完成...");
+    },
+    breforePort: function (e) {         // 发送前触发
+        console.log("文件发送之前触发");
+    },  
+    successPort: function (e) {         // 发送成功触发
+        console.log("文件发送成功");
+        onload_image()
+    },
+    errorPort: function (e) {       // 发送失败触发
+        console.log("文件发送失败");
+        onload_image()
+    },
+    deletePost: function(e){    // 删除文件触发
+        console.log("删除文件");
+        console.log(e);
+        alert('删除了'+e.filename)
+        onload_image()
+    },
+    sort: function(e){      // 排序触发
+        console.log("排序");
+        onload_image()
+    },
+});
+
+// 获取图片上传信息
+function onload_image(){
+    var res = a.FraUpload.show()
+    var ids = [];
+    for(let k in res){
+        this_val = res[k]
+        if(!empty(res[k]['is_upload']) && !empty(res[k]['ajax'])){
+            ajax_value = res[k]['ajax'];
+            ids.push(ajax_value.data.id)
+        }
+    }
+	console.log(ids);
+    $("#imagepath").val(ids);		//设置被选元素的 value 属性。
+    $('#geoJsonTxt').html(JsonFormat(res));
+}
+
+// 将类库返回的json打印到pre中
+function JsonFormat(json) {
+    if (typeof json != 'string') {
+        json = JSON.stringify(json, undefined, 2);
+    }
+        json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+             var cls = 'number';
+                if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'key';
+                        } else {
+                            cls = 'string';
+                        }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+         });
+}
+/**
+ * 判断变量是否为空
+ */
+function empty(value) {
+    if(value=="" || value==undefined || value==null || value==false || value==[] || value=={}){
+        return true;
+    }else{
+        return false;
+    }
+}
+</script>
+</body>
+</html>

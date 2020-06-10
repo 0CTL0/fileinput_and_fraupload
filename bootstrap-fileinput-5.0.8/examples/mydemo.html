@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!-- release v5.0.8, copyright 2014 - 2019 Kartik Visweswaran -->
+<!--suppress JSUnresolvedLibraryURL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Krajee JQuery Plugins - &copy; Kartik</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" crossorigin="anonymous">
+    <link href="../css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" crossorigin="anonymous">
+    <link href="../themes/explorer-fas/theme.css" media="all" rel="stylesheet" type="text/css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="../js/plugins/piexif.js" type="text/javascript"></script>
+    <script src="../js/plugins/sortable.js" type="text/javascript"></script>
+    <script src="../js/fileinput.js" type="text/javascript"></script>
+    <script src="../js/locales/fr.js" type="text/javascript"></script>
+    <script src="../js/locales/es.js" type="text/javascript"></script>
+    <script src="../themes/fas/theme.js" type="text/javascript"></script>
+    <script src="../themes/explorer-fas/theme.js" type="text/javascript"></script>
+</head>
+<body>
+<div class="container my-4">
+    
+   
+    <form enctype="multipart/form-data">     
+        <div class="form-group">
+            <div class="file-loading">
+                <label>Preview File Icon</label>
+                <input id="file-3" type="file" name="addimg" multiple>
+            </div>
+        </div>
+      
+    </form>
+	<button onclick="myFunction()">打印</button>
+
+   
+</div>
+</body>
+<script>
+	//$("#input-id").fileinput();  不帶插件選項的初始化。系統的那個插件應該是用了這個默認形式的初始化。
+	//$("#fileinput").fileinput("upload"); //upload文件上传方法
+
+	var upimgs=[];
+    $("#file-3").fileinput({
+        theme: 'fas',
+        showUpload: false,
+        showCaption: false,
+        browseClass: "btn btn-primary btn-lg",
+        fileType: "any",
+        previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+		overwriteInitial: false,
+        initialPreviewAsData: true,
+		//https://plugins.krajee.com/file-input/plugin-options#initialPreview //专门介绍初始预览的链接
+		previewAsData:true,	//是否将此预览内容解析为数据输入而不是原始标记源
+		//initialPreviewShowDelete	//是否将为使用创建的每个缩略图显示删除按钮
+		//initialPreviewDownloadUrl	//用于下载文件中的URL初始预览,内置两个属性，key（如果未在内部设置，则将作为空字符串传递 initialPreviewConfig）fileId （只有在 initialPreviewConfig）
+        //deleteUrl	//通过AJAX发布响应在初始预览中删除图像/内容的URL.该initialPreviewConfig['url']属性将被覆盖。至少发送一个空的JSON对象，以确保成功删除。
+		//overwriteInitial 	//是否要覆盖初始预览内容和字幕设置。默认值为true，由此，initialPreview在上载新文件或清除文件时，任何内容集都将被覆盖。将其设置为false有助于始终显示数据库中保存的图像或文件-很有用，特别是在使用multiple文件上传功能时。
+		//PreviewTemplates	//object，用于呈现每种预览文件类型的模板配置。
+		//PreviewSettings	//object，用于呈现上面设置的每种预览文件类型的CSS样式设置。默认情况下，这是如下设置：(各类型文件的默认样式)
+		//allowedFileTypes	//array，允许上传的文件类型列表。
+		//BrowseLabel		//string，为文件选择器/浏览按钮显示的标签。默认为Browse …。
+		//BrowseIcon		//string，显示在文件选择器/浏览按钮标签之前的图标。默认为<i class="glyphicon glyphicon-folder-open"></i>&nbsp;。
+		//BrowseClass		//string，文件选择器/浏览按钮的CSS类。默认为btn btn-primary。
+		//uploadAsync		//boolean，多个文件的批量上传是否将是异步/并行。默认为 true。
+		
+		//language	//string，插件的语言配置，以使插件能够显示您的语言环境的消息（您必须设置语言的ISO代码）。
+		//theme		//string，用于插件的主题（如果未设置，则默认为内置主题）。
+		//required	//boolean，是否必须在上传之前（对于ajax）或表单提交（对于非ajax）进行文件选择。设置为时true，如果在上传之前未选择文件，则将显示在中设置的错误消息msgFile必需。默认为false。
+		//rtl		//boolean，是否以从右到左（RTL）模式定向小部件。默认为false。——》还是在下边，做不到华哥额同一条直线
+		//encodeUrl	//boolean，是否在触发ajax调用之前对所有URL进行编码。默认为true。
+		//uploadUrl	//用于上载处理操作的URL（通常用于基于ajax的处理）。默认为null。如果未设置或null，则上传按钮操作将默认为表单提交。
+		//deleteUrl
+		//initialPreviewDownloadUrl
+		//showPreview	//boolean，是否显示文件预览。默认为true。
+		//showRemove	//boolean，是否显示文件删除/清除按钮。默认为true。
+		//showUpload	//boolean，是否显示文件上传按钮。默认为true。当非ajax场景时，这将默认为表单提交按钮。uploadUrl未指定。对于ajax上传方案，这将使用uploadUrl 作为链接。
+		//initialPreviewAsData	//boolean，是否将初始预览内容集解析为数据而不是原始标记。默认为false，以实现向后兼容（v4.3.2之前）。
+		//deleteExtraData	//	对象 function，多余的数据将作为数据传递到初始预览，并通过POST删除url / AJAX服务器调用。该initialPreviewConfig['extra']属性将被覆盖。此属性仅适用于初始预览中的ajax删除以及为initialPreviewConfig['url'] 或设置了值deleteUrl。				
+		//append	//boolean，如果您已经在INIT上设置了initialPreview，是否将内容附加到initialPreview。如果未设置，则默认为true。如果设置为false，则插件将覆盖initialPreview内容。
+		initialPreview:upimgs,
+	/*	initialPreview: [
+            "http://lorempixel.com/1920/1080/transport/1",
+            "http://lorempixel.com/1920/1080/transport/2",
+            "http://lorempixel.com/1920/1080/transport/3"
+        ],
+        initialPreviewConfig: [
+            {caption: "transport-1.jpg", size: 329892, width: "120px", url: "{$url}", key: 1},
+            {caption: "transport-2.jpg", size: 872378, width: "120px", url: "{$url}", key: 2},
+            {caption: "transport-3.jpg", size: 632762, width: "120px", url: "{$url}", key: 3}
+        ]
+		*/
+    }).on("filebatchselected", function(event, files) {	//选择文件后处理事件
+	console.log("files",files);
+	console.log("document.querySelector",document.querySelector('input[name="addimg"]').files[0]);		//后台上传的图片无法进入初始化列表？还是说数据错了，数据的确不是base64编码？
+	//upimgs[0]=document.querySelector('input[name="addimg"]').files[0];
+	upimgs[0]=  "http://lorempixel.com/1920/1080/transport/1";
+	console.log("upimgs[0]",upimgs[0]);
+	
+	//$("#file-3").fileinput("destroy");	//销毁控件
+	//$("#file-3").fileinput(); 			//初始化控件
+	
+}).on("fileclear",function(event, data, msg){	//点击浏览框右上角X 清空文件前响应事件
+
+}).on('filesorted', function(e, params) {		//排序后处理事件
+    console.log('File sorted params', params);
+	console.log('File sorted params', params.stack);
+	console.log('File sorted params', params.stack[0].url);
+}).on('filepreupload', function(event, data, previewId, index) {	//同步上传成功结果处理
+
+}).on('filebatchuploaderror', function(event, data, msg) {		//同步上传错误结果处理
+
+}).on('fileuploaded', function(e, params) {   //异步上传成功结果处理
+    console.log('File uploaded params', params);
+}).on('fileerror', function(event, data, msg) {	//异步上传错误结果处理
+
+}).fileinput("enable");; 
+
+
+function myFunction() { 		
+		console.log(document.querySelector('input[name="addimg"]').files.length);
+    	for(var i=0; i < document.querySelector('input[name="addimg"]').files.length; i++) {
+			console.log(document.querySelector('input[name="addimg"]').files[i]);
+		}
+}
+
+
+
+/*推测：初始预览的图片数组和之后上传的图片数组不是同一个，只有初始预览的数组可以排序？———————>假如推测成立，就只能按官方的来走了
+		——————》再中找找是否能够拖拉选择的文件或者将上传的文件作为初始预览
+		——————》搞不定，只能先按官方的走！！！
+		*/
+		
+//......华哥不要这种——》看不能设置初始化的button放在最左边，尽量用这个插件。————》用另外一个，效果也差不多，但功能小和社区小————》
+			//																————》两个都不行，两个都不符合需求
+
+
+/*文档：能够通过拖放对初始预览中的内容进行排序/重新排列。——》只有初始预览数组才可以拖拉?
+	数据进入初始预览数组的方法：
+	1、AJAX同步或异步上传，返回指定格式的数据
+	2、自定义数组，绑定到初始预览数组——》还没试过后添加图片放进自定义数组时是如何预览？
+
+	文档：使用方式
+	
+		模式一：提交表单
+			在此模式下，您无需设置 uploadUrl属性。该插件将使用本机文件输入来存储文件，并且可以在常规FORM
+		提交后读取它（您必须将输入包含在FORM中）。这对于单个文件上传或多个文件上传的简单方案很有用。配置非常
+		简单，因为您可以从本机表单提交中读取所有发布的数据。但是，请注意，本机文件输入是只读的，不能被外部代
+		码修改或更新。特别是对于多个文件输入选择，ONE不能将文件追加到已经选择的文件列表中。如果尝试在已选择的
+		文件输入中选择文件，它将覆盖并清除先前的选择。同样，在这种模式下，无法选择性地删除/删除在上传之前添加
+		的文件。
+		
+		模式二：提交Ajax
+			在此模式下，您必须设置 uploadUrlVALID Ajax处理服务器操作/ URL的属性。如果uploadUrl设置后，该插件会
+			自动假定该方案的ajax上传。该插件提供了用于Ajax提交的高级功能，该功能在表单提交中不可用。只有在此模
+			式下才能使用诸如在预览区域中添加/删除文件，获取上传进度条，调整图像大小等功能。您的浏览器必须支持
+			HTML5 FormData / XHR2才能正常工作，并且处理ajax调用的服务器代码必须返回有效的JSON响应。
+			
+			异步上传：这是默认模式，即uploadAsync属性设置为true。当上传多个文件时，异步模式允许为每个文件上传触发并
+		行服务器调用。您可以通过设置maxFileCount属性来控制一次允许上传的最大文件数。在异步模式下，将预览和预览
+		预览中每个缩略图的进度。
+				initialPreview：array.如果设置了此属性，则插件将在上传成功后自动自动替换预览内容中的文件
+
+			同步上传：在此模式下， uploadAsync属性设置为false。这将仅触发一个批量上载到服务器的调用，并将文件作为数组对象
+		从客户端发送到服务器。即使在此模式下，您也可以通过设置maxFileCount属性来控制一次允许上传的最大文件数。	
+				initialPreview：array，图像文件列表或任何指向您上传的文件的HTML标记。如果设置了此属性，则插件将在上传成功后自动自动替换预览内容中的文件。
+	
+	*/
+	
+/*
+基础回顾：
+		表单提交：将表单的所有属性交由action发送http请求。这个操作是由浏览器实现的，无论是否跳转页面，页面必须刷新。
+		ajax提交：这个操作的发起者是js引擎，必须启动js引擎，通过xhr对象发送http请求。后台出现formdata支持发送文件。
+*/	
+	
+
+
+</script>
+</html>

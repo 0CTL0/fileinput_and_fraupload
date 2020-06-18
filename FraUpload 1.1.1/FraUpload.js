@@ -64,7 +64,7 @@
         //图片队列
         this.files_all = {}; 
         
-        //初始化对象
+        //初始化对象——————————————————————————————————————————》导致重复初始化出现问题？
         this.init = function(){
             this.createHtml();  // 创建组件html
             para.onLoad(this); //初始化完成会掉

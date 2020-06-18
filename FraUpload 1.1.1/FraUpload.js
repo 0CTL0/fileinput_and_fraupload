@@ -39,49 +39,7 @@
         var defaults = {
             view        : "", //视图渲染对象
             url         : "",   //上传url
- 
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-fetch       : 'img', //视图分为三种,img:图片视图 , file:文件视图 ,none或者其他未知: 不渲染上传视图
+           fetch       : 'img', //视图分为三种,img:图片视图 , file:文件视图 ,none或者其他未知: 不渲染上传视图
             debug       : false,
             /* 提供给外部的接口方法 */
             onLoad          : function(e){},// 初始化完成后调用

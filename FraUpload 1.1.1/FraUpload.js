@@ -1,5 +1,11 @@
 /*FraUpload 文件上传插件模型*/
-(function($,undefined){
+
+// 立即执行函数：(function(){})()。这是一个自调函数，函数定义好之后自。
+//（function(){}）表示一个匿名函数，而后面紧跟着的（）表示立即调用此函数。而且（）也是向函数传递参数的地
+//使用此函数的好处是，不会产生任何全局变量。缺点是无法重复执行。对于插件来说，是最合适不过的了。不会产生任何全局变量，同时一次引用就够了。
+(function($,undefined){  //形成闭包，将作用域进行限定。(插件的固定格式)
+    
+    //$.fn是指jQuery的命名空间，加上fn的方法及属性，会对jQuery实例有效。
     $.fn.FraUpload = function(options,param){
         var otherArgs = Array.prototype.slice.call(arguments, 1);
         if (typeof options == 'string') {
@@ -38,6 +44,11 @@
             sort            : function(e){},
             error           : function (e){alert(e)},
         };
+            
+
+        //jQuery为开发者开发插件提供了两个方法，分别是
+        //jquery.extend(object);为扩展jquery类本身.为类添加新的方
+        //jquery.fn.extend(object);给jquery对象添加方法   
         var para = $.extend(defaults,options);
         self.para = $.extend(defaults,options);
 
@@ -162,7 +173,7 @@
 
             // input选择完文件则触发该事件
             input.change(function () {
-                // 如果value不为空，调用文件加载方法
+                // 如果value不为空，调用文件加载方
                 if($(this).val() != ""){
                     // 获取文件列表
                     var files = $(this).prop('files');

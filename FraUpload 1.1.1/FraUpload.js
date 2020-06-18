@@ -1,3 +1,10 @@
+//jquery插件一般有三种开发方式：
+
+//通过$.extend()来扩展jQuery
+//通过$.fn 向jQuery添加新的方法
+//通过$.widget()应用jQuery UI的部件工厂方式创建
+//第一种$.extend()相对简单，一般很少能够独立开发复杂插件，第三种是一种高级的开发模式不做介。二种则是一般插件开发用的方式。
+
 /*FraUpload 文件上传插件模型*/
 
 // 立即执行函数：(function(){})()。这是一个自调函数，函数定义好之后自。
@@ -21,7 +28,7 @@
             return false;
         }
 
-        return this.each(function(){
+        return this.each(function(){        //遍历匹配的元素，此处的this表示为jquery对象，而不是dom对象。这里return 为了支持链式调用。
         var para = {};    // 保留参数
         var self = this;  // 保存组件对象
         var input = null; // input
@@ -32,7 +39,49 @@
         var defaults = {
             view        : "", //视图渲染对象
             url         : "",   //上传url
-            fetch       : 'img', //视图分为三种,img:图片视图 , file:文件视图 ,none或者其他未知: 不渲染上传视图
+ 
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+fetch       : 'img', //视图分为三种,img:图片视图 , file:文件视图 ,none或者其他未知: 不渲染上传视图
             debug       : false,
             /* 提供给外部的接口方法 */
             onLoad          : function(e){},// 初始化完成后调用
@@ -44,11 +93,12 @@
             sort            : function(e){},
             error           : function (e){alert(e)},
         };
-            
+        //fraupload end            
 
+           
         //jQuery为开发者开发插件提供了两个方法，分别是
-        //jquery.extend(object);为扩展jquery类本身.为类添加新的方
-        //jquery.fn.extend(object);给jquery对象添加方法   
+            //jquery.extend(object);为扩展jquery类本身.为类添加新的方法
+            //jquery.fn.extend(object);给jquery对象添加方法   
         var para = $.extend(defaults,options);
         self.para = $.extend(defaults,options);
 
@@ -440,7 +490,7 @@
          * 参数: 无
          * 返回: 无
          */
-        $.fn.FraUpload.show = function (){
+        $.fn.FraUpload.show = function (){   //暴露公共方法供外部调用
 
             var this_val =self.files_all
             var all = {};

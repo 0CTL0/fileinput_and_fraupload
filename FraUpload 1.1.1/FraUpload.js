@@ -5,6 +5,8 @@
 //通过$.widget()应用jQuery UI的部件工厂方式创建
 //第一种$.extend()相对简单，一般很少能够独立开发复杂插件，第三种是一种高级的开发模式不做介。二种则是一般插件开发用的方式。
 
+
+
 /*FraUpload 文件上传插件模型*/
 
 // 立即执行函数：(function(){})()。这是一个自调函数，函数定义好之后自。
@@ -12,12 +14,13 @@
 //使用此函数的好处是，不会产生任何全局变量。缺点是无法重复执行。对于插件来说，是最合适不过的了。不会产生任何全局变量，同时一次引用就够了。
 (function($,undefined){  //形成闭包，将作用域进行限定。(插件的固定格式)
     
-    //$.fn是指jQuery的命名空间，加上fn的方法及属性，会对jQuery实例有效。
-    $.fn.FraUpload = function(options,param){
-        var otherArgs = Array.prototype.slice.call(arguments, 1);
-        if (typeof options == 'string') {
-            var fn = this[0][options];
-            if($.isFunction(fn)){
+ 
+    $.fn.FraUpload = function(options,param)
+         // 所以这里做的事情就是把参数列表的第1个以后的参数全部作为一个数组获取出
+        var otherArgs = Array.prototype.slice.call(arguments, 1);   //将函数传入的参数转换为数组对象。// arguments 是所有传入的参数的列表，是类数组，但不是数组
+        if (typeof options == 'string') {    //判断 options 是字符串
+            var fn = this[0][options];       //这里的this是jQuery的一个实例，它是一个类数组的对象，this[0] 就是jquery匹配到的第一个DOM元素，fn = this[0][options] 这里应该是获满足条件的第一个DOM元素上的一个方法的引用，
+            if($.isFunction(fn)){            //判断 fn 是函数
                 return fn.apply(this, otherArgs);
             }else{
                 throw ("FraUpload - No such method: " + options);

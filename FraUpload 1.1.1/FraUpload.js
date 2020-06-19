@@ -21,7 +21,7 @@
         if (typeof options == 'string') {    //判断 options 是字符串
             var fn = this[0][options];       //这里的this是jQuery的一个实例，它是一个类数组的对象，this[0] 就是jquery匹配到的第一个DOM元素，fn = this[0][options] 这里应该是获满足条件的第一个DOM元素上的一个方法的引用，
             if($.isFunction(fn)){            //判断 fn 是函数
-                return fn.apply(this, otherArgs);
+                return fn.apply(this, otherArgs); // 以otherArgs为参数列表，并且以当前jQuery实例作为this调用fn
             }else{
                 throw ("FraUpload - No such method: " + options);
             }

@@ -54,7 +54,7 @@
             sort            : function(e){},
             error           : function (e){alert(e)},
         };
-        //fraupload end            
+       
 
            
         //jQuery为开发者开发插件提供了两个方法，分别是

@@ -33,7 +33,8 @@
 
     
       //一次性return那么多，不能复用的原因在于？
-        return this.each(function(){        //遍历匹配的元素，此处的this表示为jquery对象，而不是dom对象。这里return 为了支持链式调用。
+        return this.each(function(){        //遍历匹配的元素，此处的this表示为jquery对象，而不是dom对象。 
+                                            //这里return 为了支持链式调用（若没有return,使用该方法时返回的undeined，就无法继续使用其他方法了）。
         var para = {};    // 保留参数
         var self = this;  // 保存组件对象
         var input = null; // input

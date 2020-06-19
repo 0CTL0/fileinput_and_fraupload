@@ -31,6 +31,8 @@
             return false;
         }
 
+    
+      //一次性return那么多，不能复用的原因在于？
         return this.each(function(){        //遍历匹配的元素，此处的this表示为jquery对象，而不是dom对象。这里return 为了支持链式调用。
         var para = {};    // 保留参数
         var self = this;  // 保存组件对象
@@ -67,7 +69,7 @@
         //图片队列
         this.files_all = {}; 
         
-        //初始化对象——————————————————————————————————————————》导致重复初始化出现问题？
+        //初始化对象
         this.init = function(){
             this.createHtml();  // 创建组件html
             para.onLoad(this); //初始化完成会掉

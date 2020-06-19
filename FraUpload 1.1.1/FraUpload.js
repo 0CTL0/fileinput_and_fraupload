@@ -488,3 +488,21 @@
      });
 };
 })(jQuery);
+
+
+
+/*
+Jquery的工作原理与插件：https://blog.csdn.net/qq_37939251/article/details/86743400
+
+（1）使用jquery方法
+                 $( "a" ).css( "color", "red" );
+这是一些非常基本的jQuery代码，但你知道幕后发生了什么吗？每当您使用该$函数选择元素时，它都会返回一个jQuery对象。这个对象包含了所有的你已经使用（方法.css()，.click()等）和所有适合你的选择要素。jQuery对象从对象中获取这些方法$.fn（什么意思，从原型对象中获取这些方法？）。该对象包含所有jQuery对象方法，如果我们想编写自己的方法，则还需要包含这些方法。
+
+（2）添加一个Jquery方法
+            $.fn.greenify = function() {
+                this.css( "color", "green" );
+              };
+           $( "a" ).greenify(); // Makes all the links green.
+
+
+*/

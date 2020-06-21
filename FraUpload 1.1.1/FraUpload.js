@@ -31,13 +31,22 @@
             return false;
         }
 
-    
-      //一次性return那么多，不能复用的原因在于？
-        return this.each(function(){        //遍历匹配的元素，此处的this表示为jquery对象，而不是dom对象。 
-                                            //这里return 为了支持链式调用（若没有return,使用该方法时返回的undeined，就无法继续使用其他方法了）。
+   
+          // return this.each(function() {
+            //     $(this).append(' - ' + $(this).data('x'));
+            // });
+  // 等价于
+            // var objs = this;
+            // for (var i=0; i<objs.length; i++) {
+            //     var obj = objs[i];
+            //     $(obj).append(' - ' + $(obj).data('x'));
+            // };
+            // return this; 
+        return this.each(function(){        //遍历匹配的元素，此处的this表示为jquery对象，而不是dom对象。jquery对象是类数组对象！！！
+                                  
         var para = {};    // 保留参数
         var self = this;  // 保存组件对象
-        var input = null; // input
+        var input = null; // input/
         var view_DOM = null; //视图ul DOM对象
         var view_id = null; //视图ul DOM对象
         var self_sortable = null; //视图 插件对象
@@ -60,11 +69,18 @@
        
 
            
-        //jQuery为开发者开发插件提供了两个方法，分别是
-            //jquery.extend(object);为扩展jquery类本身.为类添加新的方法
-            //jquery.fn.extend(object);给jquery对象添加方法   
+  //$.extend( [deep ], target, object1 [, objectN ] )  合并默认值和选项，不修改默认对象。这是常用的插件开发模式。通过这种方式，我们可以为全局对象jQuery添加新的函数指定了一个参数，则意味着参数target被省略。此时，target就是jQuery对象本身。deep 是否深度合并对象，默认为false。
         var para = $.extend(defaults,options);
         self.para = $.extend(defaults,options);
+   //区别：把jQuery看成了一个类，。jQuery.extend()，是扩展的jQuery这个类。jQuery.fn.extend() 这个拓展的是jQuery.fn的方法。
+       //    两者调用方式不同：
+       //        jQuery.extend(),为扩展jquery类本身.为类添加新的方法，一般由传入的全局函数来调用，如$.init()，$.ajax();
+       //        jQuery.fn.extend(),一般由具体的实例对象来调用，可以用来拓展个选择器，例如$.fn.each();
+       //    4.2、两者的主要功能作用不同：
+       //        jQuery.extend(object); 为扩展jQuery类本身，为自身添加新的方法。
+       //        jQuery.fn.extend(object);给jQuery对象添加方法
+       //    4.3、大部分插件都是用jQuery.fn.extend()
+            
 
 
         //图片队列

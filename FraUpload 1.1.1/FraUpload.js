@@ -1,10 +1,12 @@
-//jquery插件一般有三种开发方式：
+//bug:多个实例，show方法失的self被复；图片排序没有对内存文件起作用，即没有改变files_all
+//没有实现的功能：清空files_all
 
-//通过$.extend()来扩展jQuery
-//通过$.fn 向jQuery添加新的方法
-//通过$.widget()应用jQuery UI的部件工厂方式创建
-//第一种$.extend()相对简单，一般很少能够独立开发复杂插件，第三种是一种高级的开发模式不做介。二种则是一般插件开发用的方式。
 
+//jquery插件一般有三种开发方式
+  //通过$.extend()来扩展jQuery  
+  //通过$.fn 向jQuery添加新的方法
+  //通过$.widget()应用jQuery UI的部件工厂方式创建
+  //第一种$.extend()相对简单，一般很少能够独立开发复杂插件，第三种是一种高级的开发模式不做介。二种则是一般插件开发用的方式。
 
 
 /*FraUpload 文件上传插件模型*/
@@ -14,7 +16,6 @@
 //使用此函数的好处是，不会产生任何全局变量。缺点是无法重复执行。对于插件来说，是最合适不过的了。不会产生任何全局变量，同时一次引用就够了。
 (function($,undefined){  //形成闭包，将作用域进行限定。(插件的固定格式)
     
- 
     $.fn.FraUpload = function(options,param)
          // 所以这里做的事情就是把参数列表的第1个以后的参数全部作为一个数组获取出
         var otherArgs = Array.prototype.slice.call(arguments, 1);   //将函数传入的参数转换为数组对象。// arguments 是所有传入的参数的列表，是类数组，但不是数组

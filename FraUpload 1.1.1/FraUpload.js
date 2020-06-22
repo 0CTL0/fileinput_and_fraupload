@@ -475,7 +475,8 @@
          */
         $.fn.FraUpload.show = function (){   //暴露公共方法供外部调用
 
-            var this_val =self.files_all
+            var this_val =self.files_all;             //多次调用FraUpload时，self总是指向最后一个初始化的对象？？？
+                                                      //关闭插件后，这个冲突跟排序事件一样，都解决了.......
             var all = {};
             for(let k in this_val){
                 all_val = {

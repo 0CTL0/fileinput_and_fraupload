@@ -472,6 +472,8 @@
          * 功能：返回文件队列
          * 参数: 无
          * 返回: 无
+         *
+         *bug:多次调用FraUpload时会不断的改变self的值，self总是指向最后的上下文——————》两种解决方法：(1)通过options将dom对象传回来处理 （2）dom对象添加唯一值属性，用数组存储所有的self对象，通过options传唯一值属性进来处理
          */
         $.fn.FraUpload.show = function (){   //暴露公共方法供外部调用
 

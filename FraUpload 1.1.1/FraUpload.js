@@ -476,7 +476,7 @@
         $.fn.FraUpload.show = function (){   //暴露公共方法供外部调用
 
             var this_val =self.files_all;             //多次调用FraUpload时，self总是指向最后一个初始化的对象？？？
-                                                      //关闭插件后，这个冲突跟排序事件一样，都解决了.......
+                                                      //原因：self被复用了，当选择多个节点而多次调用时，this（DOM对象）不断切换改变，self最后指向最后一个dom对象。
             var all = {};
             for(let k in this_val){
                 all_val = {

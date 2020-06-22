@@ -298,6 +298,8 @@
                   onSort:function(evt){ //发生排序发生该事件
                    // console.log('onSort.foo:', [evt.item, evt.from]);
                 },
+//坑：将插件引进页面后，onEnd事件和排序回调事件失效，万万没想到是油猴脚本引起的。
+//前端水太深：这个坑太隐蔽，还是通过对比大法，从idea中引入插件demo,对比找不到，最后看浏览器控制台，发现在项目中的demo比桌面demo多了脚本资源，怀疑然后关掉脚本，果然是。。。                                      
                   onEnd: function(evt){ //拖拽完毕之后发生该事件
                     // 生成排序
                     var bind_arr = [];

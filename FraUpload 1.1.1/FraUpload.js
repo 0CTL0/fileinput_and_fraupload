@@ -46,7 +46,7 @@
         return this.each(function(){        //遍历匹配的元素，此处的this表示为jquery对象，而不是dom对象。jquery对象是类数组对象！！！
                                   
         var para = {};    // 保留参数
-        var self = this;  // 保存组件对象
+        var self = this;  // 保存组件对象     //不同于这个this.each的this,这个this是dom
         var input = null; // input/
         var view_DOM = null; //视图ul DOM对象
         var view_id = null; //视图ul DOM对象

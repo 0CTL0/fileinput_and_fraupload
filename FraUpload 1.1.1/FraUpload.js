@@ -475,11 +475,14 @@
          *
          *bug:多次调用FraUpload时会不断的改变self的值，self总是指向最后的上下文——————》两种解决方法：(1)通过options将dom对象传回来处理 （2）dom对象添加唯一值属性，用数组存储所有的self对象，通过options传唯一值属性进来处理
          */
-        $.fn.FraUpload.show = function (){   //暴露公共方法供外部调用
+        $.fn.FraUpload.show = function options   //暴露公共方法供外部调用
 
-            var this_val =self.files_all;             //多次调用FraUpload时，self总是指向最后一个初始化的对象？？？
-                                                      //原因：self被复用了，当选择多个节点而多次调用时，this（DOM对象）不断切换改变，self最后指向最后一个dom对象。
-            var all = {};
+            //var this_val =self.files_all;     //原因：self被复用了，当选择多个节点而多次调用时，this（DOM对象）不断切换改变，self最后指向最后一个dom对象。
+            
+       //采用方法（1） 
+          console.log("options:"+JSON.stringify(options));
+          var this_val=options[0].files_all;      //options[0]为第一个dom对象
+          var all = {};
             for(let k in this_val){
                 all_val = {
                     ajax:this_val[k]['ajax'],
@@ -493,6 +496,27 @@
                 all[k] = all_val;
             }
             return all;
+        }
+          
+          
+          //销毁控件
+         $.fn.FraUpload.clear = function (imgId,uploader){
+             console.log("uploader:"+JSON.stringify(uploader));
+
+            //清除内存数据
+             // uploader=null;  //这里是修改引用，而不是更改对象，js的都是浅复制
+             for(var key in uploader){
+                 delete uploader[key];
+             }
+
+             //清除页面
+             $("#"+imgId+"").parent().after('<div class="col-sm-10">\n' +
+                 '<input type="hidden" id="'+imgId+'">\n' +
+                 '<span id="'+imgId+'Loader" class="upload_button" >上传</span>\n' +
+                 '<div class="'+imgId+'Show"></div>\n' +
+                 '</div>');
+             $("#"+imgId+"").parent().remove();
+
         }
 
         /**
